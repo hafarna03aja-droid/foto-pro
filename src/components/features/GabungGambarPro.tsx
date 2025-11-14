@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { CombineIcon, UploadIcon, SparklesIcon, XIcon } from '../icons';
+import { CombineIcon, UploadIcon, XIcon } from '../icons';
 
 export const GabungGambarPro: React.FC = () => {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
