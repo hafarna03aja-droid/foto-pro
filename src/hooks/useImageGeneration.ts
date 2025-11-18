@@ -62,24 +62,29 @@ export const useImageGeneration = ({ onSuccess, onError }: UseImageGenerationPro
           onError?.(errorMsg);
         }
       } else if (provider === 'maia') {
-        // Contoh request ke Maia Router
-        const imageBase64 = await fileToBase64(files[0]);
-        const response = await fetch(API_CONFIG.maia.apiUrl + '/generate-image', {
+        // Request ke Maia Router chat/completions
+        const response = await fetch(API_CONFIG.maia.apiUrl, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${apiKey}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            prompt,
-            image: imageBase64,
+            model: 'maia-1.5', // sesuaikan dengan model yang tersedia
+            messages: [
+              { role: 'system', content: 'You are an AI image generator.' },
+              { role: 'user', content: prompt },
+            ],
+            // Tambahkan parameter lain jika diperlukan
           }),
         });
         if (!response.ok) throw new Error('Maia API error: ' + response.statusText);
         const data = await response.json();
-        if (data.imageUrl) {
-          setGeneratedImage(data.imageUrl);
-          onSuccess?.(data.imageUrl);
+        // Asumsikan response berisi image url di data.choices[0].message.content
+        const imageUrl = data.choices?.[0]?.message?.content;
+        if (imageUrl) {
+          setGeneratedImage(imageUrl);
+          onSuccess?.(imageUrl);
         } else {
           const errorMsg = 'Maia tidak menghasilkan gambar.';
           setError(errorMsg);

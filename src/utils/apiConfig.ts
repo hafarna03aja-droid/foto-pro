@@ -35,7 +35,7 @@ export const API_CONFIG = {
     apiUrl: 'https://openrouter.ai/api',
   },
   maia: {
-    apiUrl: 'https://maia.router.ai/api',
+    apiUrl: 'https://api.maiarouter.ai/v1/chat/completions',
   },
 };
 
