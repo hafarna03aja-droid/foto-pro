@@ -6,9 +6,6 @@ interface SettingsModalProps {
   onClose: () => void;
 }
 
-
-const LOCAL_KEY = 'foto_pro_api_key';
-const PROVIDER_KEY = 'foto_pro_api_provider';
 const PROVIDERS = [
   { value: 'google', label: 'Google AI (Gemini)' },
   { value: 'openai', label: 'OpenAI' },
@@ -16,10 +13,12 @@ const PROVIDERS = [
   { value: 'maia', label: 'Maia Router' },
 ];
 
-
+export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
   const { apiKey, provider, setApiKey, setProvider } = useApiProvider();
   const [inputKey, setInputKey] = useState(apiKey);
-  const [inputProvider, setInputProvider] = useState(provider);
+  const [inputProvider, setInputProvider] = useState<"google" | "openai" | "openrouter" | "maia">(
+    provider as "google" | "openai" | "openrouter" | "maia"
+  );
   const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<'success' | 'error' | null>(null);
 
@@ -75,7 +74,7 @@ const PROVIDERS = [
         <select
           className="w-full p-2 border rounded mb-4"
           value={inputProvider}
-          onChange={e => setInputProvider(e.target.value)}
+          onChange={e => setInputProvider(e.target.value as "google" | "openai" | "openrouter" | "maia")}
         >
           {PROVIDERS.map(p => (
             <option key={p.value} value={p.value}>{p.label}</option>
@@ -88,16 +87,16 @@ const PROVIDERS = [
           value={inputKey}
           onChange={e => setInputKey(e.target.value)}
         />
-        {provider === 'google' && (
+        {inputProvider === 'google' && (
           <p className="text-xs mb-2 text-gray-500">Google: <a href='https://makersuite.google.com/app/apikey' target='_blank' rel='noopener noreferrer' className='text-blue-500 underline'>Cara mendapatkan API key</a></p>
         )}
-        {provider === 'openai' && (
+        {inputProvider === 'openai' && (
           <p className="text-xs mb-2 text-gray-500">OpenAI: <a href='https://platform.openai.com/api-keys' target='_blank' rel='noopener noreferrer' className='text-blue-500 underline'>Buat API key di OpenAI</a></p>
         )}
-        {provider === 'openrouter' && (
+        {inputProvider === 'openrouter' && (
           <p className="text-xs mb-2 text-gray-500">OpenRouter: <a href='https://openrouter.ai/' target='_blank' rel='noopener noreferrer' className='text-blue-500 underline'>Daftar di OpenRouter</a></p>
         )}
-        {provider === 'maia' && (
+        {inputProvider === 'maia' && (
           <p className="text-xs mb-2 text-gray-500">Maia: <a href='https://maia.router.ai/' target='_blank' rel='noopener noreferrer' className='text-blue-500 underline'>Daftar di Maia Router</a></p>
         )}
         {message && (

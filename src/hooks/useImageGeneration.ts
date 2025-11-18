@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { API_CONFIG, validateApiKey } from '../utils/apiConfig';
+import { API_CONFIG } from '../utils/apiConfig';
 import { useApiProvider } from '../contexts/ApiProviderContext';
 
 interface UseImageGenerationProps {
