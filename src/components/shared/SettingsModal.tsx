@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useApiProvider } from '../../contexts/ApiProviderContext';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -16,22 +17,20 @@ const PROVIDERS = [
 ];
 
 
-export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
-  const [apiKey, setApiKey] = useState('');
-  const [provider, setProvider] = useState('google');
+  const { apiKey, provider, setApiKey, setProvider } = useApiProvider();
+  const [inputKey, setInputKey] = useState(apiKey);
+  const [inputProvider, setInputProvider] = useState(provider);
   const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<'success' | 'error' | null>(null);
 
   useEffect(() => {
     if (isOpen) {
-      const storedKey = localStorage.getItem(LOCAL_KEY) || '';
-      const storedProvider = localStorage.getItem(PROVIDER_KEY) || 'google';
-      setApiKey(storedKey);
-      setProvider(storedProvider);
+      setInputKey(apiKey);
+      setInputProvider(provider);
       setMessage(null);
       setMessageType(null);
     }
-  }, [isOpen]);
+  }, [isOpen, apiKey, provider]);
 
   // Validasi dinamis sesuai provider
   const validateKey = (key: string, provider: string) => {
@@ -44,23 +43,23 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
   };
 
   const handleSave = () => {
-    if (!validateKey(apiKey, provider)) {
-      setMessage('API key tidak valid untuk provider ' + PROVIDERS.find(p => p.value === provider)?.label);
+    if (!validateKey(inputKey, inputProvider)) {
+      setMessage('API key tidak valid untuk provider ' + PROVIDERS.find(p => p.value === inputProvider)?.label);
       setMessageType('error');
       return;
     }
-    localStorage.setItem(LOCAL_KEY, apiKey);
-    localStorage.setItem(PROVIDER_KEY, provider);
+    setApiKey(inputKey);
+    setProvider(inputProvider as any);
     setMessage('API key berhasil disimpan!');
     setMessageType('success');
     onClose();
   };
 
   const handleDelete = () => {
-    localStorage.removeItem(LOCAL_KEY);
-    localStorage.removeItem(PROVIDER_KEY);
     setApiKey('');
     setProvider('google');
+    setInputKey('');
+    setInputProvider('google');
     setMessage('API key berhasil dihapus. Akan menggunakan default dari .env.');
     setMessageType('success');
     onClose();
@@ -75,8 +74,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
         <label className="block mb-2 text-sm font-semibold">Provider API</label>
         <select
           className="w-full p-2 border rounded mb-4"
-          value={provider}
-          onChange={e => setProvider(e.target.value)}
+          value={inputProvider}
+          onChange={e => setInputProvider(e.target.value)}
         >
           {PROVIDERS.map(p => (
             <option key={p.value} value={p.value}>{p.label}</option>
@@ -85,9 +84,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
         <input
           type="password"
           className="w-full p-2 border rounded mb-4"
-          placeholder={`Masukkan API Key ${PROVIDERS.find(p => p.value === provider)?.label}`}
-          value={apiKey}
-          onChange={e => setApiKey(e.target.value)}
+          placeholder={`Masukkan API Key ${PROVIDERS.find(p => p.value === inputProvider)?.label}`}
+          value={inputKey}
+          onChange={e => setInputKey(e.target.value)}
         />
         {provider === 'google' && (
           <p className="text-xs mb-2 text-gray-500">Google: <a href='https://makersuite.google.com/app/apikey' target='_blank' rel='noopener noreferrer' className='text-blue-500 underline'>Cara mendapatkan API key</a></p>

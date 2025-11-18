@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { API_CONFIG, validateApiKey } from '../utils/apiConfig';
+import { useApiProvider } from '../contexts/ApiProviderContext';
 
 interface UseImageGenerationProps {
   onSuccess?: (imageUrl: string) => void;
@@ -19,8 +20,9 @@ export const useImageGeneration = ({ onSuccess, onError }: UseImageGenerationPro
       reader.onerror = (error) => reject(error);
     });
 
+  const { apiKey, provider } = useApiProvider();
   const generateImage = async (files: File[], prompt: string) => {
-    if (!validateApiKey()) {
+    if (!apiKey) {
       const errorMsg = 'API Key tidak ditemukan. Silakan tambahkan di Pengaturan.';
       setError(errorMsg);
       onError?.(errorMsg);
@@ -31,9 +33,6 @@ export const useImageGeneration = ({ onSuccess, onError }: UseImageGenerationPro
     setError(null);
 
     try {
-      const provider = API_CONFIG.provider;
-      const apiKey = API_CONFIG.apiKey;
-
       if (provider === 'google') {
         const { GoogleGenerativeAI } = await import('@google/generative-ai');
         const genAI = new GoogleGenerativeAI(apiKey);
