@@ -15,7 +15,9 @@ import {
   EnvelopeIcon,
   SketchIcon,
   UserCircleIcon,
+  SettingsIcon,
 } from './icons';
+import { SettingsModal } from './shared/SettingsModal';
 
 interface MenuItem {
   id: string;
@@ -47,6 +49,7 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = ({ activeItem, onItemClick, isOpen, onClose }) => {
   const { user, logout } = useAuth();
+  const [showSettings, setShowSettings] = React.useState(false);
   return (
     <>
       {/* Overlay for mobile */}
@@ -124,11 +127,24 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItem, onItemClick, isOpe
             Keluar
           </button>
 
+          <div className="flex items-center justify-between">
+            <button
+              className="flex items-center gap-2 text-gray-600 hover:text-blue-600"
+              onClick={() => setShowSettings(true)}
+              title="Pengaturan API Key"
+            >
+              <SettingsIcon className="w-6 h-6" />
+              <span className="hidden md:inline">Pengaturan</span>
+            </button>
+          </div>
+
           <p className="text-xs text-gray-500 dark:text-gray-400 text-center pt-2">
             © 2025 by 24 Learning Centre
           </p>
         </div>
       </aside>
+
+      <SettingsModal isOpen={showSettings} onClose={() => setShowSettings(false)} />
     </>
   );
 };

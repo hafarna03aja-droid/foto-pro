@@ -21,7 +21,7 @@ export const useImageGeneration = ({ onSuccess, onError }: UseImageGenerationPro
 
   const generateImage = async (files: File[], prompt: string) => {
     if (!validateApiKey()) {
-      const errorMsg = 'API Key tidak ditemukan. Silakan tambahkan VITE_API_KEY di file .env';
+      const errorMsg = 'API Key tidak ditemukan. Silakan tambahkan di Pengaturan.';
       setError(errorMsg);
       onError?.(errorMsg);
       return;
@@ -31,37 +31,111 @@ export const useImageGeneration = ({ onSuccess, onError }: UseImageGenerationPro
     setError(null);
 
     try {
-      // Import dinamis untuk menghindari error jika package belum terinstall
-      const { GoogleGenerativeAI } = await import('@google/generative-ai');
-      
-      const genAI = new GoogleGenerativeAI(API_CONFIG.googleAI.apiKey);
-      const model = genAI.getGenerativeModel({ model: API_CONFIG.googleAI.model });
-      
-      const imageParts = await Promise.all(
-        files.map(async (file) => ({
-          inlineData: {
-            data: await fileToBase64(file),
-            mimeType: file.type,
+      const provider = API_CONFIG.provider;
+      const apiKey = API_CONFIG.apiKey;
+
+      if (provider === 'google') {
+        const { GoogleGenerativeAI } = await import('@google/generative-ai');
+        const genAI = new GoogleGenerativeAI(apiKey);
+        const model = genAI.getGenerativeModel({ model: API_CONFIG.googleAI.model });
+        const imageParts = await Promise.all(
+          files.map(async (file) => ({
+            inlineData: {
+              data: await fileToBase64(file),
+              mimeType: file.type,
+            },
+          }))
+        );
+        const parts = [
+          ...imageParts,
+          { text: prompt }
+        ];
+        const result = await model.generateContent(parts);
+        const response = await result.response;
+        const text = response.text();
+        if (text) {
+          setGeneratedImage(text);
+          onSuccess?.(text);
+        } else {
+          const errorMsg = 'AI tidak menghasilkan gambar. Coba lagi.';
+          setError(errorMsg);
+          onError?.(errorMsg);
+        }
+      } else if (provider === 'maia') {
+        // Contoh request ke Maia Router
+        const imageBase64 = await fileToBase64(files[0]);
+        const response = await fetch(API_CONFIG.maia.apiUrl + '/generate-image', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
           },
-        }))
-      );
-
-      const parts = [
-        ...imageParts,
-        { text: prompt }
-      ];
-
-      const result = await model.generateContent(parts);
-      const response = await result.response;
-      const text = response.text();
-
-      if (text) {
-        setGeneratedImage(text);
-        onSuccess?.(text);
+          body: JSON.stringify({
+            prompt,
+            image: imageBase64,
+          }),
+        });
+        if (!response.ok) throw new Error('Maia API error: ' + response.statusText);
+        const data = await response.json();
+        if (data.imageUrl) {
+          setGeneratedImage(data.imageUrl);
+          onSuccess?.(data.imageUrl);
+        } else {
+          const errorMsg = 'Maia tidak menghasilkan gambar.';
+          setError(errorMsg);
+          onError?.(errorMsg);
+        }
+      } else if (provider === 'openai') {
+        // Contoh request ke OpenAI (image generation)
+        const response = await fetch(API_CONFIG.openai.apiUrl + '/images/generations', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            prompt,
+            n: 1,
+            size: '1024x1024',
+          }),
+        });
+        if (!response.ok) throw new Error('OpenAI API error: ' + response.statusText);
+        const data = await response.json();
+        if (data.data && data.data[0]?.url) {
+          setGeneratedImage(data.data[0].url);
+          onSuccess?.(data.data[0].url);
+        } else {
+          const errorMsg = 'OpenAI tidak menghasilkan gambar.';
+          setError(errorMsg);
+          onError?.(errorMsg);
+        }
+      } else if (provider === 'openrouter') {
+        // Contoh request ke OpenRouter (image generation)
+        const response = await fetch(API_CONFIG.openrouter.apiUrl + '/images/generations', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            prompt,
+            n: 1,
+            size: '1024x1024',
+          }),
+        });
+        if (!response.ok) throw new Error('OpenRouter API error: ' + response.statusText);
+        const data = await response.json();
+        if (data.data && data.data[0]?.url) {
+          setGeneratedImage(data.data[0].url);
+          onSuccess?.(data.data[0].url);
+        } else {
+          const errorMsg = 'OpenRouter tidak menghasilkan gambar.';
+          setError(errorMsg);
+          onError?.(errorMsg);
+        }
       } else {
-        const errorMsg = 'AI tidak menghasilkan gambar. Coba lagi.';
-        setError(errorMsg);
-        onError?.(errorMsg);
+        setError('Provider belum didukung untuk generate gambar.');
+        onError?.('Provider belum didukung untuk generate gambar.');
       }
     } catch (e: any) {
       const errorMsg = `Terjadi kesalahan: ${e.message}`;
