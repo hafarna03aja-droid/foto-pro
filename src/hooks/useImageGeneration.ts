@@ -79,19 +79,22 @@ export const useImageGeneration = ({ onSuccess, onError }: UseImageGenerationPro
         });
         if (!response.ok) {
           let errorDetail = '';
+          let errorDataRaw = '';
           try {
             const errorData = await response.json();
             errorDetail = errorData?.error?.message || JSON.stringify(errorData);
+            errorDataRaw = JSON.stringify(errorData, null, 2);
           } catch (e) {
             errorDetail = response.statusText;
+            errorDataRaw = response.statusText;
           }
           const errorMsg = `Maia API error: ${response.status} - ${errorDetail}`;
           setError(errorMsg);
           onError?.(errorMsg);
           console.error(errorMsg);
-          // Jika error 400, tampilkan detail response di UI
+          // Jika error 400, tampilkan seluruh response body di UI
           if (response.status === 400) {
-            alert('Maia API error 400: ' + errorDetail);
+            alert('Maia API error 400 detail:\n' + errorDataRaw);
           }
           return;
         }
