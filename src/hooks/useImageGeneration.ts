@@ -69,7 +69,7 @@ export const useImageGeneration = ({ onSuccess, onError }: UseImageGenerationPro
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            model: 'maia-1.5', // sesuaikan dengan model yang tersedia
+            model: API_CONFIG.maia.model || 'maia-1.5', // model bisa diubah lewat konfigurasi
             messages: [
               { role: 'system', content: 'You are an AI image generator.' },
               { role: 'user', content: prompt },
@@ -77,7 +77,24 @@ export const useImageGeneration = ({ onSuccess, onError }: UseImageGenerationPro
             // Tambahkan parameter lain jika diperlukan
           }),
         });
-        if (!response.ok) throw new Error('Maia API error: ' + response.statusText);
+        if (!response.ok) {
+          let errorDetail = '';
+          try {
+            const errorData = await response.json();
+            errorDetail = errorData?.error?.message || JSON.stringify(errorData);
+          } catch (e) {
+            errorDetail = response.statusText;
+          }
+          const errorMsg = `Maia API error: ${response.status} - ${errorDetail}`;
+          setError(errorMsg);
+          onError?.(errorMsg);
+          console.error(errorMsg);
+          // Jika error 400, tampilkan detail response di UI
+          if (response.status === 400) {
+            alert('Maia API error 400: ' + errorDetail);
+          }
+          return;
+        }
         const data = await response.json();
         // Asumsikan response berisi image url di data.choices[0].message.content
         const imageUrl = data.choices?.[0]?.message?.content;
@@ -85,9 +102,10 @@ export const useImageGeneration = ({ onSuccess, onError }: UseImageGenerationPro
           setGeneratedImage(imageUrl);
           onSuccess?.(imageUrl);
         } else {
-          const errorMsg = 'Maia tidak menghasilkan gambar.';
+          const errorMsg = 'Maia tidak menghasilkan gambar. Response: ' + JSON.stringify(data);
           setError(errorMsg);
           onError?.(errorMsg);
+          console.error(errorMsg);
         }
       } else if (provider === 'openai') {
         // Contoh request ke OpenAI (image generation)
