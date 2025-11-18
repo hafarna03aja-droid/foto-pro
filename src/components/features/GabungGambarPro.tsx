@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { CombineIcon, UploadIcon, XIcon } from '../icons';
+import { useImageGeneration } from '../../hooks/useImageGeneration';
 
 export const GabungGambarPro: React.FC = () => {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { isLoading, error, generatedImage, generateImage, reset } = useImageGeneration();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -32,17 +32,12 @@ export const GabungGambarPro: React.FC = () => {
 
   const handleGenerate = () => {
     if (uploadedFiles.length < 1) {
-        setError('Silakan unggah setidaknya satu gambar.');
-        return;
+      reset();
+      return;
     }
-    setIsLoading(true);
-    setError(null);
-
-    // Simulasi proses (nanti diganti dengan API call)
-    setTimeout(() => {
-      setIsLoading(false);
-      setError('Fitur ini memerlukan API Key Google AI. Silakan tambahkan di file .env');
-    }, 2000);
+    // Gabung prompt default untuk fitur ini
+    const prompt = 'Gabungkan gambar-gambar ini menjadi satu komposisi profesional dengan kualitas HD.';
+    generateImage(uploadedFiles, prompt);
   };
 
   return (
@@ -114,6 +109,13 @@ export const GabungGambarPro: React.FC = () => {
             {error && (
               <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
                 <p className="text-sm text-red-600">{error}</p>
+              </div>
+            )}
+            {generatedImage && (
+              <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                <p className="text-sm text-green-700 font-semibold mb-2">Gambar berhasil digabung!</p>
+                <img src={generatedImage} alt="Gabungan" className="w-full rounded-lg shadow" />
+                <a href={generatedImage} download className="block mt-2 text-teal-600 underline">Download</a>
               </div>
             )}
           </aside>
