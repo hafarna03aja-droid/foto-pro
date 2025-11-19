@@ -36,7 +36,7 @@ export const API_CONFIG = {
   },
   maia: {
     apiUrl: 'https://api.maiarouter.ai/v1/chat/completions',
-    model: 'maia-1.5', // bisa diubah jika model berbeda
+    model: 'maia-1.3', // update ke model yang tersedia
   },
 };
 
