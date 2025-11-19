@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Sidebar } from './components/Sidebar'
 import { MainContent } from './components/MainContent'
 import { LoginForm } from './components/LoginForm'
+import { SettingsModal } from './components/shared/SettingsModal'
 import { useAuth } from './contexts/AuthContext'
 import './App.css'
 
@@ -9,6 +10,7 @@ function App() {
   const { isAuthenticated } = useAuth()
   const [activeItem, setActiveItem] = useState('foto-pro-asisten')
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const [darkMode, setDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('darkMode')
@@ -49,6 +51,7 @@ function App() {
         onItemClick={setActiveItem}
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
+        onOpenSettings={() => setIsSettingsOpen(true)}
       />
 
       {/* Main Content Area */}
@@ -67,7 +70,7 @@ function App() {
             </button>
             <h1 className="text-lg font-bold text-gray-800 dark:text-gray-100">Foto PRO</h1>
           </div>
-          
+
           {/* Theme Toggle Button - Mobile */}
           <button
             onClick={toggleDarkMode}
@@ -77,9 +80,8 @@ function App() {
           >
             <div className="relative w-5 h-5">
               <svg
-                className={`absolute inset-0 w-5 h-5 text-white transition-all duration-500 ${
-                  darkMode ? 'rotate-0 opacity-100' : 'rotate-90 opacity-0'
-                }`}
+                className={`absolute inset-0 w-5 h-5 text-white transition-all duration-500 ${darkMode ? 'rotate-0 opacity-100' : 'rotate-90 opacity-0'
+                  }`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -92,9 +94,8 @@ function App() {
                 />
               </svg>
               <svg
-                className={`absolute inset-0 w-5 h-5 text-white transition-all duration-500 ${
-                  darkMode ? '-rotate-90 opacity-0' : 'rotate-0 opacity-100'
-                }`}
+                className={`absolute inset-0 w-5 h-5 text-white transition-all duration-500 ${darkMode ? '-rotate-90 opacity-0' : 'rotate-0 opacity-100'
+                  }`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -121,9 +122,8 @@ function App() {
             <div className="relative w-6 h-6">
               {/* Moon Icon - Dark Mode */}
               <svg
-                className={`absolute inset-0 w-6 h-6 text-purple-600 dark:text-cyan-400 transition-all duration-500 ${
-                  darkMode ? 'rotate-0 opacity-100 scale-100' : 'rotate-90 opacity-0 scale-50'
-                }`}
+                className={`absolute inset-0 w-6 h-6 text-purple-600 dark:text-cyan-400 transition-all duration-500 ${darkMode ? 'rotate-0 opacity-100 scale-100' : 'rotate-90 opacity-0 scale-50'
+                  }`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -137,9 +137,8 @@ function App() {
               </svg>
               {/* Sun Icon - Light Mode */}
               <svg
-                className={`absolute inset-0 w-6 h-6 text-amber-500 transition-all duration-500 ${
-                  darkMode ? '-rotate-90 opacity-0 scale-50' : 'rotate-0 opacity-100 scale-100'
-                }`}
+                className={`absolute inset-0 w-6 h-6 text-amber-500 transition-all duration-500 ${darkMode ? '-rotate-90 opacity-0 scale-50' : 'rotate-0 opacity-100 scale-100'
+                  }`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -152,7 +151,7 @@ function App() {
                 />
               </svg>
             </div>
-            
+
             {/* Tooltip */}
             <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-gray-900 dark:bg-gray-700 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
               {darkMode ? 'Mode Terang' : 'Mode Gelap'}
@@ -162,9 +161,11 @@ function App() {
 
         {/* Main Content */}
         <main className="flex-1 overflow-hidden">
-          <MainContent activeItem={activeItem} />
+          <MainContent activeItem={activeItem} onOpenSettings={() => setIsSettingsOpen(true)} />
         </main>
       </div>
+
+      <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </div>
   )
 }

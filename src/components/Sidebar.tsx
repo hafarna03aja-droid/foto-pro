@@ -16,8 +16,8 @@ import {
   SketchIcon,
   UserCircleIcon,
   SettingsIcon,
+  MicrophoneIcon,
 } from './icons';
-import { SettingsModal } from './shared/SettingsModal';
 
 interface MenuItem {
   id: string;
@@ -38,6 +38,7 @@ const menuItems: MenuItem[] = [
   { id: 'bikin-carousel', label: 'Bikin Carousel', Icon: CarouselIcon, description: 'Carousel Instagram' },
   { id: 'desain-undangan', label: 'Desain Undangan', Icon: EnvelopeIcon, description: 'Undangan pernikahan' },
   { id: 'sketsa-gambar', label: 'Sketsa Gambar', Icon: SketchIcon, description: 'Sketsa ke foto' },
+  { id: 'transcriber', label: 'Transcriber', Icon: MicrophoneIcon, description: 'Speech to Text' },
 ];
 
 interface SidebarProps {
@@ -45,11 +46,11 @@ interface SidebarProps {
   onItemClick: (id: string) => void;
   isOpen: boolean;
   onClose: () => void;
+  onOpenSettings: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ activeItem, onItemClick, isOpen, onClose }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ activeItem, onItemClick, isOpen, onClose, onOpenSettings }) => {
   const { user, logout } = useAuth();
-  const [showSettings, setShowSettings] = React.useState(false);
   return (
     <>
       {/* Overlay for mobile */}
@@ -62,9 +63,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItem, onItemClick, isOpe
 
       {/* Sidebar */}
       <aside
-        className={`fixed left-0 top-0 h-full w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 z-50 transform transition-all duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        } md:translate-x-0 md:static overflow-y-auto`}
+        className={`fixed left-0 top-0 h-full w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 z-50 transform transition-all duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'
+          } md:translate-x-0 md:static overflow-y-auto`}
       >
         <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center gap-3">
           <Logo24Icon className="w-8 h-8 text-teal-500 dark:text-cyan-400" />
@@ -83,11 +83,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItem, onItemClick, isOpe
                   onItemClick(id);
                   onClose();
                 }}
-                className={`w-full flex items-start gap-3 p-3 rounded-lg mb-1 transition-all ${
-                  isActive
-                    ? 'bg-teal-50 dark:bg-teal-900/30 text-teal-700 dark:text-cyan-400 border-l-4 border-teal-500 dark:border-cyan-400'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
-                }`}
+                className={`w-full flex items-start gap-3 p-3 rounded-lg mb-1 transition-all ${isActive
+                  ? 'bg-teal-50 dark:bg-teal-900/30 text-teal-700 dark:text-cyan-400 border-l-4 border-teal-500 dark:border-cyan-400'
+                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                  }`}
               >
                 <Icon className="w-5 h-5 flex-shrink-0 mt-0.5" />
                 <div className="text-left">
@@ -130,7 +129,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItem, onItemClick, isOpe
           <div className="flex items-center justify-between">
             <button
               className="flex items-center gap-2 text-gray-600 hover:text-blue-600"
-              onClick={() => setShowSettings(true)}
+              onClick={onOpenSettings}
               title="Pengaturan API Key"
             >
               <SettingsIcon className="w-6 h-6" />
@@ -144,7 +143,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeItem, onItemClick, isOpe
         </div>
       </aside>
 
-      <SettingsModal isOpen={showSettings} onClose={() => setShowSettings(false)} />
     </>
   );
 };

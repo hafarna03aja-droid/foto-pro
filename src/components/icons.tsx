@@ -4,17 +4,17 @@ import React from 'react';
 export const Logo24Icon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
     <g>
-      <path d="M3 0C1.34315 0 0 1.34315 0 3V21C0 22.6569 1.34315 24 3 24H21C22.6569 24 24 22.6569 24 21V3C24 1.34315 22.6569 0 21 0H3Z" fill="url(#paint0_linear_header_icon)"/>
-      <path d="M11.64 7.32C11.84 6.92 11.54 6.44 11.08 6.44H7.12C6.56 6.44 6.22 7.04 6.58 7.48L8.44 9.88C8.64 10.16 9.08 10.16 9.28 9.88L11.64 7.32Z" fill="white"/>
-      <path fillRule="evenodd" clipRule="evenodd" d="M18.72 8.68V6.88H15.88V8.16L14.76 7.76C14.52 7.68 14.24 7.76 14.04 7.92L12.24 9.4L13.4 11.24L14.56 10.36V10.44L17.48 11.96L18.72 10.6V8.68ZM14.56 9.08L15.08 9.48L14.56 9.8V9.08Z" fill="white"/>
-      <path d="M11.12 19H6.56V16.84L9.8 13.08H6.56V11.4H11.44V13.36L8 17.56H11.12V19Z" fill="white"/>
-      <path d="M17.84 19H12.8V17.62L16.28 14.28C15.24 13.56 14.4 12.84 13.52 12.04C13.32 11.84 13.32 11.52 13.52 11.32L14.24 10.72C14.44 10.52 14.76 10.52 14.96 10.72C16.04 11.84 17.04 12.68 17.92 13.4V11.4H19.52V17.08H14.4L12.56 19H17.84Z" fill="white"/>
+      <path d="M3 0C1.34315 0 0 1.34315 0 3V21C0 22.6569 1.34315 24 3 24H21C22.6569 24 24 22.6569 24 21V3C24 1.34315 22.6569 0 21 0H3Z" fill="url(#paint0_linear_header_icon)" />
+      <path d="M11.64 7.32C11.84 6.92 11.54 6.44 11.08 6.44H7.12C6.56 6.44 6.22 7.04 6.58 7.48L8.44 9.88C8.64 10.16 9.08 10.16 9.28 9.88L11.64 7.32Z" fill="white" />
+      <path fillRule="evenodd" clipRule="evenodd" d="M18.72 8.68V6.88H15.88V8.16L14.76 7.76C14.52 7.68 14.24 7.76 14.04 7.92L12.24 9.4L13.4 11.24L14.56 10.36V10.44L17.48 11.96L18.72 10.6V8.68ZM14.56 9.08L15.08 9.48L14.56 9.8V9.08Z" fill="white" />
+      <path d="M11.12 19H6.56V16.84L9.8 13.08H6.56V11.4H11.44V13.36L8 17.56H11.12V19Z" fill="white" />
+      <path d="M17.84 19H12.8V17.62L16.28 14.28C15.24 13.56 14.4 12.84 13.52 12.04C13.32 11.84 13.32 11.52 13.52 11.32L14.24 10.72C14.44 10.52 14.76 10.52 14.96 10.72C16.04 11.84 17.04 12.68 17.92 13.4V11.4H19.52V17.08H14.4L12.56 19H17.84Z" fill="white" />
     </g>
     <defs>
       <linearGradient id="paint0_linear_header_icon" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#2DD4BF"/>
-        <stop offset="0.5" stopColor="#38BDF8"/>
-        <stop offset="1" stopColor="#FBBF24"/>
+        <stop stopColor="#2DD4BF" />
+        <stop offset="0.5" stopColor="#38BDF8" />
+        <stop offset="1" stopColor="#FBBF24" />
       </linearGradient>
     </defs>
   </svg>
@@ -183,3 +183,16 @@ export const SettingsIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 4.5v2.25m10.5-2.25v2.25M4.5 6.75h2.25m10.5 0h2.25M12 15.75a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5zm0 0v2.25m0-10.5V6.75" />
   </svg>
 );
+
+export const MicrophoneIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
+  </svg>
+);
+
+export const DocumentDuplicateIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75" />
+  </svg>
+);
+
