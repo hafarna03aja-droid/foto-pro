@@ -36,34 +36,40 @@ for (const [name, version] of Object.entries(criticalDeps)) {
   }
 }
 
-// Check .env file
+// Check .env file (skip in CI/production environments like Vercel)
 console.log('\n🔐 Environment Configuration:');
-const envPath = join(rootDir, '.env');
-if (existsSync(envPath)) {
-  const envContent = readFileSync(envPath, 'utf-8');
-  if (envContent.includes('VITE_API_KEY=')) {
-    const hasRealKey = !envContent.includes('your_google_ai_api_key_here');
-    if (hasRealKey) {
-      console.log('  ✅ .env file exists with API key');
+const isCI = process.env.CI === 'true' || process.env.VERCEL === '1';
+if (isCI) {
+  console.log('  ℹ️  Running in CI/Production - skipping .env file check');
+  console.log('  ℹ️  Environment variables should be set in deployment platform');
+} else {
+  const envPath = join(rootDir, '.env');
+  if (existsSync(envPath)) {
+    const envContent = readFileSync(envPath, 'utf-8');
+    if (envContent.includes('VITE_API_KEY=')) {
+      const hasRealKey = !envContent.includes('your_google_ai_api_key_here');
+      if (hasRealKey) {
+        console.log('  ✅ .env file exists with API key');
+      } else {
+        console.log('  ⚠️  .env file exists but using placeholder key');
+      }
     } else {
-      console.log('  ⚠️  .env file exists but using placeholder key');
+      console.log('  ❌ .env file missing VITE_API_KEY');
+      hasErrors = true;
     }
   } else {
-    console.log('  ❌ .env file missing VITE_API_KEY');
+    console.log('  ❌ .env file not found');
+    console.log('  ℹ️  Run: cp .env.example .env');
     hasErrors = true;
   }
-} else {
-  console.log('  ❌ .env file not found');
-  console.log('  ℹ️  Run: cp .env.example .env');
-  hasErrors = true;
 }
 
-// Check node_modules
+// Check node_modules (non-fatal in CI since it's being installed)
 console.log('\n📁 Installation Status:');
 const nodeModulesPath = join(rootDir, 'node_modules');
 if (existsSync(nodeModulesPath)) {
   console.log('  ✅ node_modules folder exists');
-  
+
   // Check if @google/generative-ai is installed
   const genaiPath = join(nodeModulesPath, '@google', 'generative-ai');
   if (existsSync(genaiPath)) {
@@ -71,12 +77,16 @@ if (existsSync(nodeModulesPath)) {
   } else {
     console.log('  ❌ @google/generative-ai is NOT installed');
     console.log('  ℹ️  Run: npm install @google/generative-ai');
-    hasErrors = true;
+    if (!isCI) hasErrors = true;
   }
 } else {
-  console.log('  ❌ node_modules not found');
-  console.log('  ℹ️  Run: npm install');
-  hasErrors = true;
+  if (isCI) {
+    console.log('  ℹ️  node_modules will be installed during build');
+  } else {
+    console.log('  ❌ node_modules not found');
+    console.log('  ℹ️  Run: npm install');
+    hasErrors = true;
+  }
 }
 
 console.log('\n' + '='.repeat(50));
