@@ -97,7 +97,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
           <p className="text-xs mb-2 text-gray-500">OpenRouter: <a href='https://openrouter.ai/' target='_blank' rel='noopener noreferrer' className='text-blue-500 underline'>Daftar di OpenRouter</a></p>
         )}
         {inputProvider === 'maia' && (
-          <p className="text-xs mb-2 text-gray-500">Maia: <a href='https://maia.router.ai/' target='_blank' rel='noopener noreferrer' className='text-blue-500 underline'>Daftar di Maia Router</a></p>
+          <div className="text-xs mb-2">
+            <p className="text-gray-500">Maia: <a href='https://maiarouter.ai/' target='_blank' rel='noopener noreferrer' className='text-blue-500 underline'>Daftar di Maia Router</a></p>
+            <p className="text-orange-600 font-semibold mt-1">⚠️ MAIA hanya untuk chat/text, tidak bisa generate gambar. Gunakan Google/OpenAI untuk gambar.</p>
+          </div>
         )}
         {message && (
           <div className={`mb-2 text-sm ${messageType === 'error' ? 'text-red-600' : 'text-green-600'}`}>{message}</div>

@@ -23,9 +23,9 @@ export const API_CONFIG = {
   provider: getProvider(),
   apiKey: getApiKey(),
   googleAI: {
-    model: 'gemini-1.5-flash',
-    textModel: 'gemini-1.5-pro',
-    apiVersion: 'v1',
+    model: 'gemini-pro',
+    textModel: 'gemini-pro',
+    apiVersion: 'v1beta',
   },
   openai: {
     model: 'gpt-4',
@@ -35,8 +35,9 @@ export const API_CONFIG = {
     apiUrl: 'https://openrouter.ai/api',
   },
   maia: {
-    apiUrl: 'https://api.maiarouter.ai/v1/chat/completions',
-    model: 'maia-1.3', // update ke model yang tersedia
+    apiUrl: 'https://api.maiarouter.ai/v1',
+    model: 'maia/gemini-2.5-flash', // Correct model format
+    // Note: MAIA is for chat/text completions only, not image generation
   },
 };
 

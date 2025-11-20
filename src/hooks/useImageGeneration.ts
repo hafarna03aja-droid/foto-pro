@@ -61,55 +61,11 @@ export const useImageGeneration = ({ onSuccess, onError }: UseImageGenerationPro
           onError?.(errorMsg);
         }
       } else if (provider === 'maia') {
-        // Request ke Maia Router chat/completions
-        const response = await fetch(API_CONFIG.maia.apiUrl, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${apiKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            model: API_CONFIG.maia.model || 'maia-1.5', // model bisa diubah lewat konfigurasi
-            messages: [
-              { role: 'system', content: 'You are an AI image generator.' },
-              { role: 'user', content: prompt },
-            ],
-            // Tambahkan parameter lain jika diperlukan
-          }),
-        });
-        if (!response.ok) {
-          let errorDetail = '';
-          let errorDataRaw = '';
-          try {
-            const errorData = await response.json();
-            errorDetail = errorData?.error?.message || JSON.stringify(errorData);
-            errorDataRaw = JSON.stringify(errorData, null, 2);
-          } catch (e) {
-            errorDetail = response.statusText;
-            errorDataRaw = response.statusText;
-          }
-          const errorMsg = `Maia API error: ${response.status} - ${errorDetail}`;
-          setError(errorMsg);
-          onError?.(errorMsg);
-          console.error(errorMsg);
-          // Jika error 400, tampilkan seluruh response body di UI
-          if (response.status === 400) {
-            alert('Maia API error 400 detail:\n' + errorDataRaw);
-          }
-          return;
-        }
-        const data = await response.json();
-        // Asumsikan response berisi image url di data.choices[0].message.content
-        const imageUrl = data.choices?.[0]?.message?.content;
-        if (imageUrl) {
-          setGeneratedImage(imageUrl);
-          onSuccess?.(imageUrl);
-        } else {
-          const errorMsg = 'Maia tidak menghasilkan gambar. Response: ' + JSON.stringify(data);
-          setError(errorMsg);
-          onError?.(errorMsg);
-          console.error(errorMsg);
-        }
+        // MAIA Router is a chat/text completion API and does NOT support image generation
+        const errorMsg = 'MAIA Router tidak mendukung generate gambar. MAIA hanya untuk chat/text completions. Silakan gunakan provider lain (Google, OpenAI) untuk generate gambar.';
+        setError(errorMsg);
+        onError?.(errorMsg);
+        console.error(errorMsg);
       } else if (provider === 'openai') {
         // Contoh request ke OpenAI (image generation)
         const response = await fetch(API_CONFIG.openai.apiUrl + '/images/generations', {
