@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const LOCAL_KEY = 'foto_pro_api_key';
 const PROVIDER_KEY = 'foto_pro_api_provider';
 
+// eslint-disable-next-line react-refresh/only-export-components
 export type ApiProviderType = 'google' | 'openai' | 'openrouter' | 'maia';
 
 interface ApiProviderContextProps {

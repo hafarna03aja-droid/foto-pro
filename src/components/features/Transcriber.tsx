@@ -44,14 +44,11 @@ export const Transcriber: React.FC = () => {
         };
 
         recognition.onresult = (event: any) => {
-            let interimTranscript = '';
             let finalTranscript = '';
 
             for (let i = event.resultIndex; i < event.results.length; ++i) {
                 if (event.results[i].isFinal) {
                     finalTranscript += event.results[i][0].transcript;
-                } else {
-                    interimTranscript += event.results[i][0].transcript;
                 }
             }
 
@@ -106,8 +103,8 @@ export const Transcriber: React.FC = () => {
                         <button
                             onClick={toggleListening}
                             className={`p-6 rounded-full transition-all transform hover:scale-105 shadow-lg ${isListening
-                                    ? 'bg-red-500 hover:bg-red-600 animate-pulse'
-                                    : 'bg-teal-500 hover:bg-teal-600'
+                                ? 'bg-red-500 hover:bg-red-600 animate-pulse'
+                                : 'bg-teal-500 hover:bg-teal-600'
                                 }`}
                             title={isListening ? 'Stop Recording' : 'Start Recording'}
                         >
