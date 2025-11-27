@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import type { Message } from '../../types';
-import { 
-  Logo24Icon, 
-  PaperAirplaneIcon, 
-  SearchIcon, 
-  UserCircleIcon 
+import {
+  Logo24Icon,
+  PaperAirplaneIcon,
+  SearchIcon,
+  UserCircleIcon
 } from '../icons';
 import MarkdownMessage from '../shared/MarkdownMessage';
 
@@ -46,13 +46,13 @@ export const ChatInterface: React.FC = () => {
 
   const filteredMessages = searchQuery
     ? messages.filter((msg) =>
-        msg.text.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+      msg.text.toLowerCase().includes(searchQuery.toLowerCase())
+    )
     : messages;
 
   const highlightText = (text: string, query: string) => {
     if (!query) return text;
-    
+
     const parts = text.split(new RegExp(`(${query})`, 'gi'));
     return parts.map((part, index) =>
       part.toLowerCase() === query.toLowerCase() ? (
@@ -70,7 +70,7 @@ export const ChatInterface: React.FC = () => {
 
     // Cek bantuan terlebih dahulu
     if (lowerQuery.includes('bantuan') || lowerQuery.includes('help') || lowerQuery === 'hi' || lowerQuery === 'hai' || lowerQuery === 'halo') {
-        return `Tentu! 🤖 Aku bisa membantumu memahami semua fitur di Foto PRO.
+      return `Tentu! 🤖 Aku bisa membantumu memahami semua fitur di Foto PRO.
 
 **Fitur yang tersedia:**
 - 🖼️ **Gabung Gambar:** Kombinasikan beberapa foto
@@ -88,7 +88,7 @@ Ketik nama fitur untuk panduan lengkap! 👇`;
     }
 
     const guides: { [key: string]: string } = {
-        'gabung gambar': `**🖼️ Panduan Fitur: Gabung Gambar Profesional**
+      'gabung gambar': `**🖼️ Panduan Fitur: Gabung Gambar Profesional**
         
 *Tujuan:* Menggabungkan beberapa gambar menjadi satu mahakarya yang mulus dan berkualitas HD.
 
@@ -99,8 +99,8 @@ Ketik nama fitur untuk panduan lengkap! 👇`;
 4. ✍️ **Tambahkan Elemen:** Sisipkan teks dan logo jika diperlukan.
 5. 🌟 **Gunakan Fitur Premium:** Aktifkan 'Kualitas HD' dan 'Hapus Latar Belakang'.
 6. 🚀 **Klik 'Buat Gambar':** AI akan menggabungkan semuanya!`,
-        
-        'photo produk': `**🛍️ Panduan Fitur: Foto Produk Premium**
+
+      'photo produk': `**🛍️ Panduan Fitur: Foto Produk Premium**
 
 *Tujuan:* Menciptakan visual produk komersial yang menarik.
 
@@ -111,7 +111,7 @@ Ketik nama fitur untuk panduan lengkap! 👇`;
 4. 📝 **Deskripsi Produk:** Jelaskan produk untuk hasil lebih akurat.
 5. 🚀 **Klik 'Generate Photo':** AI akan menghasilkan foto produk profesional.`,
 
-        'edit foto': `**✨ Panduan Fitur: Edit Foto**
+      'edit foto': `**✨ Panduan Fitur: Edit Foto**
 
 *Tujuan:* Restorasi foto lama atau edit foto resmi.
 
@@ -123,7 +123,7 @@ Ketik nama fitur untuk panduan lengkap! 👇`;
 3. 📝 **Tambahkan Instruksi:** Jelaskan hasil yang diinginkan (opsional).
 4. 🚀 **Klik 'Edit Photo':** AI akan memproses foto Anda.`,
 
-        'pre wedding': `**💖 Panduan Fitur: Pre-Wedding**
+      'pre wedding': `**💖 Panduan Fitur: Pre-Wedding**
 
 *Tujuan:* Generate foto pre-wedding sinematik dan romantis.
 
@@ -134,7 +134,7 @@ Ketik nama fitur untuk panduan lengkap! 👇`;
 4. 📝 **Deskripsi Custom:** Tambahkan detail khusus (opsional).
 5. 🚀 **Klik 'Generate Pre-Wedding Photo':** Dapatkan foto pre-wedding impian!`,
 
-        'foto model': `**👤 Panduan Fitur: Foto Model**
+      'foto model': `**👤 Panduan Fitur: Foto Model**
 
 *Tujuan:* Ciptakan foto model berkualitas tinggi.
 
@@ -145,7 +145,7 @@ Ketik nama fitur untuk panduan lengkap! 👇`;
 4. 📝 **Custom Instructions:** Tambahkan detail spesifik.
 5. 🚀 **Klik 'Generate Model Photo':** Buat foto model profesional!`,
 
-        'sewa fotografer': `**📸 Panduan Fitur: Sewa Fotografer (Face Swap)**
+      'sewa fotografer': `**📸 Panduan Fitur: Sewa Fotografer (Face Swap)**
 
 *Tujuan:* Face-swap dengan AI fotografer profesional.
 
@@ -155,7 +155,7 @@ Ketik nama fitur untuk panduan lengkap! 👇`;
 3. 📝 **Tambahkan Konteks:** Jelaskan setting yang diinginkan.
 4. 🚀 **Klik 'Generate Photo':** Dapatkan hasil foto profesional!`,
 
-        'bikin banner': `**📢 Panduan Fitur: Bikin Banner**
+      'bikin banner': `**📢 Panduan Fitur: Bikin Banner**
 
 *Tujuan:* Desain banner promosi profesional.
 
@@ -166,7 +166,7 @@ Ketik nama fitur untuk panduan lengkap! 👇`;
 4. 📝 **Isi Detail:** Judul, deskripsi, dan CTA.
 5. 🚀 **Klik 'Generate Banner':** Banner siap digunakan!`,
 
-        'bikin carousel': `**📱 Panduan Fitur: Bikin Carousel Instagram**
+      'bikin carousel': `**📱 Panduan Fitur: Bikin Carousel Instagram**
 
 *Tujuan:* Buat konten carousel Instagram 5 slide.
 
@@ -176,7 +176,7 @@ Ketik nama fitur untuk panduan lengkap! 👇`;
 3. 📝 **Isi Informasi:** Topik, poin-poin utama, dan CTA.
 4. 🚀 **Klik 'Generate Carousel':** 5 slide siap posting!`,
 
-        'desain undangan': `**💌 Panduan Fitur: Desain Undangan**
+      'desain undangan': `**💌 Panduan Fitur: Desain Undangan**
 
 *Tujuan:* Buat undangan pernikahan digital.
 
@@ -186,7 +186,7 @@ Ketik nama fitur untuk panduan lengkap! 👇`;
 3. 📝 **Isi Detail:** Nama pasangan, tanggal, lokasi, dan pesan.
 4. 🚀 **Klik 'Generate Invitation':** Undangan cantik siap dibagikan!`,
 
-        'sketsa gambar': `**🎨 Panduan Fitur: Sketsa Gambar**
+      'sketsa gambar': `**🎨 Panduan Fitur: Sketsa Gambar**
 
 *Tujuan:* Ubah sketsa hitam putih jadi foto berwarna realistis.
 
@@ -199,9 +199,9 @@ Ketik nama fitur untuk panduan lengkap! 👇`;
     };
 
     for (const key in guides) {
-        if (lowerQuery.includes(key)) {
-            return guides[key];
-        }
+      if (lowerQuery.includes(key)) {
+        return guides[key];
+      }
     }
 
     return null;
@@ -242,7 +242,7 @@ Ketik nama fitur untuk panduan lengkap! 👇`;
           <h2 className="font-bold text-gray-800 dark:text-gray-100">Foto PRO Asisten</h2>
         </div>
         <div className="flex items-center gap-4 text-gray-500 dark:text-gray-400">
-          <button 
+          <button
             onClick={() => setShowSearch(!showSearch)}
             className="relative p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition-colors group"
             aria-label="Search messages"
@@ -304,25 +304,23 @@ Ketik nama fitur untuk panduan lengkap! 👇`;
           </div>
         ) : (
           <>
-            {filteredMessages.map((msg) => (
-          <div
-            key={msg.id}
-            className={`flex items-start gap-4 ${
-              msg.sender === 'user' ? 'justify-end' : 'justify-start'
-            }`}
-          >
+            {filteredMessages.map((msg: Message) => (
+              <div
+                key={msg.id}
+                className={`flex items-start gap-4 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'
+                  }`}
+              >
                 {msg.sender === 'assistant' && (
                   <Logo24Icon className="w-10 h-10 flex-shrink-0" />
                 )}
                 <div
-                  className={`max-w-lg p-4 rounded-2xl ${
-                    msg.sender === 'user'
-                      ? 'bg-teal-500 dark:bg-cyan-600 text-white rounded-br-none'
-                      : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-bl-none border border-gray-200 dark:border-gray-700'
-                  }`}
+                  className={`max-w-lg p-4 rounded-2xl ${msg.sender === 'user'
+                    ? 'bg-teal-500 dark:bg-cyan-600 text-white rounded-br-none'
+                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-bl-none border border-gray-200 dark:border-gray-700'
+                    }`}
                 >
                   {msg.sender === 'assistant' ? (
-                    <MarkdownMessage content={msg.text} searchQuery={searchQuery} />
+                    <MarkdownMessage content={msg.text} />
                   ) : (
                     <p className="text-sm whitespace-pre-wrap">
                       {searchQuery ? highlightText(msg.text, searchQuery) : msg.text}
@@ -342,8 +340,8 @@ Ketik nama fitur untuk panduan lengkap! 👇`;
                 <div className="max-w-lg p-4 rounded-2xl bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-bl-none border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-teal-400 rounded-full animate-pulse"></div>
-                    <div className="w-2 h-2 bg-teal-400 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
-                    <div className="w-2 h-2 bg-teal-400 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
+                    <div className="w-2 h-2 bg-teal-400 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                    <div className="w-2 h-2 bg-teal-400 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
                   </div>
                 </div>
               </div>

@@ -4,23 +4,12 @@ import remarkGfm from 'remark-gfm';
 
 interface MarkdownMessageProps {
   content: string;
-  searchQuery?: string;
 }
 
-const MarkdownMessage: React.FC<MarkdownMessageProps> = ({ content, searchQuery }) => {
-  // Highlight search text
-  const highlightText = (text: string, query: string) => {
-    if (!query) return text;
-    const parts = text.split(new RegExp(`(${query})`, 'gi'));
-    return parts.map((part) =>
-      part.toLowerCase() === query.toLowerCase()
-        ? `<mark class="bg-yellow-300 dark:bg-yellow-600 rounded px-1">${part}</mark>`
-        : part
-    ).join('');
-  };
-
+const MarkdownMessage: React.FC<MarkdownMessageProps> = ({ content }) => {
   // Process content with search highlighting
-  const processedContent = searchQuery ? highlightText(content, searchQuery) : content;
+  // const processedContent = searchQuery ? highlightText(content, searchQuery) : content;
+  const processedContent = content;
 
   return (
     <div className="prose prose-sm dark:prose-invert max-w-none">
