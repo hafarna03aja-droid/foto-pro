@@ -95,3 +95,64 @@ Vercel otomatis akan deploy ulang setiap kali Anda push ke GitHub:
 - 📦 Repository: https://github.com/hafarna03aja-droid/foto-pro
 - 🚀 Vercel: https://vercel.com
 - 📖 Docs: https://vercel.com/docs
+
+---
+
+# Deploy ke Netlify
+
+Aplikasi ini juga siap untuk di-deploy ke Netlify.
+
+## Langkah Deploy
+
+### Option 1: Deploy via Netlify Dashboard (Recommended)
+
+1. **Buka Netlify Dashboard**
+   - Kunjungi https://app.netlify.com
+   - Login dengan akun GitHub/GitLab/Bitbucket Anda
+
+2. **Import Project**
+   - Klik "Add new site" → "Import an existing project"
+   - Pilih provider Git Anda (misal: GitHub)
+   - Pilih repository `hafarna03aja-droid/foto-pro`
+
+3. **Configure Project**
+   - Build Command: `npm run build`
+   - Publish directory: `dist`
+   - **Netlify akan otomatis mendeteksi konfigurasi dari file `netlify.toml` yang sudah ada di repository ini.**
+
+4. **Environment Variables**
+   - Klik "Show advanced" atau pergi ke "Site settings" setelah deploy awal (jika gagal)
+   - Tambahkan variable:
+     - Key: `VITE_API_KEY`
+     - Value: [Your Google AI API Key]
+
+5. **Deploy**
+   - Klik "Deploy site"
+
+### Option 2: Deploy via Netlify CLI
+
+```powershell
+# Install Netlify CLI
+npm install -g netlify-cli
+
+# Login
+netlify login
+
+# Initialize & Deploy
+netlify init
+# Ikuti instruksi di terminal:
+# - Create & configure a new site
+# - Team: [Your Team]
+# - Site name: (Optional)
+# - Build command: npm run build
+# - Directory to deploy: dist
+
+# Deploy to production
+netlify deploy --prod
+```
+
+## Konfigurasi Khusus Netlify
+
+File `netlify.toml` di root project menangani:
+- Build settings
+- Redirects untuk SPA (Single Page Application) agar routing React berfungsi dengan baik (menghindari 404 saat refresh halaman).
